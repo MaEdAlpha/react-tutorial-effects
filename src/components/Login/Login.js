@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
 import Button from '../UI/Button/Button';
+import AuthContext from '../../store/auth-context';
 
 //define your reducerFn() outside of scope as it takes in no props.
 //use dispatchFn(dispatchObj: {type:string, action:string | boolean | number}) in onChange events to update based off of difference scenarios.  
@@ -22,11 +23,12 @@ const passwordReducer = (state, action) => {
  }
  if(action.type === 'INPUT_BLUR'){
    return { value: state.value, isValid: state.value.trim().length > 6};
- }
- return { value:'', isValid:false };
+  }
+  return { value:'', isValid:false };
 }
 
-const Login = (props) => {
+const Login = () => {
+  const authCtx = useContext(AuthContext);
   
   const [emailState, dispatchEmailState] = useReducer(emailReducer, {value:'', isValid:false} );
   
@@ -74,7 +76,7 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(emailState.value, passwordState.value);
+    authCtx.onLogin(emailState.value, passwordState.value);
   };
 
   return (
