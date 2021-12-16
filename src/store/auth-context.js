@@ -5,6 +5,7 @@ import React from 'react';
 //need to wrap components with context to allow the components to access the context. checkout App.js..
 const AuthContext = React.createContext({
     isLoggedIn:false,
+    onLogout: ()=>{},
 });
 
 export default AuthContext;
