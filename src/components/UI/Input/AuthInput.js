@@ -1,7 +1,21 @@
-import React from "react";
+import React, {useRef, useImperativeHandle} from "react";
 import classes from "./AuthInput.module.css";
 
-const AuthInput = (props) => {
+
+const AuthInput = React.forwardRef((props, ref) => {
+  const inputRef = useRef();
+  
+  const activate = () =>{ //avoid doing this pattern. 
+    inputRef.current.focus();
+  };
+
+  //should avoid using imperativeHandle (programatically change things)
+  useImperativeHandle(ref, () => {
+    return {
+        focus: activate
+    }
+  });
+
   return  <div
       className={`${classes.control} ${
         props.isValid === false ? classes.invalid : ""
@@ -9,6 +23,7 @@ const AuthInput = (props) => {
     >
       <label htmlFor={props.id}>{props.label}</label>
       <input
+        ref={inputRef}
         type={props.type}
         id={props.id}
         value={props.value}
@@ -16,6 +31,6 @@ const AuthInput = (props) => {
         onBlur={props.onBlur}
       />
     </div>
-};
+});
 
 export default AuthInput;
